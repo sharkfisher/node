@@ -64,8 +64,8 @@ function doJSON(input, filename, cb) {
     if (type === 'heading' &&
         !text.trim().match(/^example/i)) {
       if (tok.depth - depth > 1) {
-        return cb(new Error(`Inappropriate heading level
-${JSON.stringify(tok)}`));
+        return cb(new Error('Inappropriate heading level\n'+
+							JSON.stringify(tok)));
       }
 
       // Sometimes we have two headings with a single
@@ -245,16 +245,16 @@ function processList(section) {
       }
     } else if (type === 'list_item_end') {
       if (!current) {
-        throw new Error(`invalid list - end without current item
-${JSON.stringify(tok)}
-${JSON.stringify(list)}`);
+        throw new Error('invalid list - end without current item\n' +
+                        `${JSON.stringify(tok)}\n` +
+                        JSON.stringify(list));
       }
       current = stack.pop();
     } else if (type === 'text') {
       if (!current) {
-        throw new Error(`invalid list - text without current item
-${JSON.stringify(tok)}
-${JSON.stringify(list)}`);
+        throw new Error('invalid list - text without current item\n' +
+                        `${JSON.stringify(tok)}\n` +
+                        JSON.stringify(list));
       }
       current.textRaw = current.textRaw || '';
       current.textRaw += `${tok.text} `;
@@ -427,9 +427,9 @@ function parseListItem(item) {
 
 function finishSection(section, parent) {
   if (!section || !parent) {
-    throw new Error(`Invalid finishSection call
-${JSON.stringify(section)}
-${JSON.stringify(parent)}`);
+    throw new Error('Invalid finishSection call\n' +
+                    `${JSON.stringify(section)}\n` +
+                    JSON.stringify(parent));
   }
 
   if (!section.type) {
